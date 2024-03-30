@@ -1,0 +1,61 @@
+* {
+    font-size: 32px;
+}
+button {
+    border: 1px solid #000;
+    cursor: pointer;
+}
+.main_body {
+    height: 850px;
+    width: 700px;
+}
+.input_wrap {
+    display: flex;
+}
+.input {
+    width: 540px;
+    height: 58px;
+    background-color: #DAEBE7;
+    border: 1px solid #000;
+    padding: 5px;
+}
+.c {
+    background-color: #29C7AA;
+    width: 150px;
+    height: 70px;
+}
+.output {
+    width: 688px;
+    height: 60px;
+    background-color: #D9D9D9;
+    border: 1px solid #000;
+    padding: 5px;
+}
+.btns {
+    display: flex;
+}
+.numbers {
+    display: flex;
+    flex-wrap: wrap;
+}
+.num_btn {
+    height: 178px;
+    width: 183px;
+    background-color: #22E0BD;
+}
+.short {
+    height: 176px;
+}
+.long {
+    width: 184px;
+}
+.operators {
+    display: flex;
+    flex-wrap: wrap;
+    width: 150px;
+}
+.oper_btn {
+    height: 142px;
+    width: 150px;
+    background-color: #22E0BD;
+}
