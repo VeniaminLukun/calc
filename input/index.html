@@ -6,18 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>calc</title>
     <link rel="stylesheet" href="style.css">
-    <script src="../model/script.js"></script>
 </head>
 <body>
     <div class="main_body">
         <div class="input_output">
             <div class="input_wrap">
                 <input type="text" class="input" id="input">
-                <button class="c">
+                <button class="c" id="c">
                     C
                 </button>
             </div>
-            <div class="output" id="output"></div>
+            <input class="output" id="output" value="4365" disabled></input>
         </div>
         <div class="btns">
             <div class="numbers">
@@ -48,13 +47,13 @@
                 <button class="num_btn">
                     9
                 </button>
-                <button class="num_btn short long">
+                <button class="num_btn short long" id=".">
                     .
                 </button>
-                <button class="num_btn short">
+                <button class="num_btn short" id="0">
                     0
                 </button>
-                <button class="num_btn short">
+                <button class="num_btn short" id="00">
                     00
                 </button>
             </div>
@@ -71,11 +70,24 @@
                 <button class="oper_btn">
                     /
                 </button>
-                <button class="oper_btn">
+                <button class="oper_btn_spec" id="equal">
                     =
                 </button>
             </div>
         </div>
     </div>
 </body>
+<script>
+    var input = document.getElementById("input");
+    input.addEventListener("keyup", function() {
+        input.value = input.value.replace(/[^0-9\+\-\*\/\.]/gi, "");
+        var i = input.value.length;
+        if (input.value[i-1] == "+" || input.value[i-1] == "-" || input.value[i-1] == "*" || input.value[i-1] == "/") {
+            if (input.value[i-2] == "+" || input.value[i-2] == "-" || input.value[i-2] == "*" || input.value[i-2] == "/") {
+                input.value = input.value.replace(input.value[i-2].concat(input.value[i-1]), input.value[i-1]);
+            }
+        }
+    })
+</script>
+<script src="../model/script.js"></script>
 </html>
