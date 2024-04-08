@@ -7,84 +7,73 @@
     <title>calc</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="main_body">
-        <div class="input_output">
-            <div class="input_wrap">
-                <input type="text" class="input" id="input">
-                <button class="c" id="c">
-                    C
-                </button>
+<body onkeydown="focusInput()" onload="focusInput()">
+    <div class="calc_wrap">
+        <div class="main_body">
+            <div class="input_output">
+                <div class="input_wrap">
+                    <input type="text" class="input" id="input" value="0" onkeydown="check_enter(event), input_keydown(event)">
+                    <button id="c">
+                        C
+                    </button>
+                </div>
+                <div class="output_wrap">
+                    <input id="output" value="0" disabled></input>
+                    <button id="back">⌫</button>
+                </div>
             </div>
-            <input class="output" id="output" value="" disabled></input>
-        </div>
-        <div class="btns">
-            <div class="numbers">
-                <button class="num_btn long">
-                    1
-                </button>
-                <button class="num_btn">
-                    2
-                </button>
-                <button class="num_btn">
-                    3
-                </button>
-                <button class="num_btn long">
-                    4
-                </button>
-                <button class="num_btn">
-                    5
-                </button>
-                <button class="num_btn">
-                    6
-                </button>
-                <button class="num_btn long">
-                    7
-                </button>
-                <button class="num_btn">
-                    8
-                </button>
-                <button class="num_btn">
-                    9
-                </button>
-                <button class="oper_btn short long" id="dot">
-                    .
-                </button>
-                <button class="num_btn short" id="0">
-                    0
-                </button>
-                <button class="num_btn short" id="00">
-                    00
-                </button>
-            </div>
-            <div class="operators">
-                <button class="oper_btn">
-                    +
-                </button>
-                <button class="oper_btn">
-                    -
-                </button>
-                <button class="oper_btn">
-                    *
-                </button>
-                <button class="oper_btn">
-                    /
-                </button>
-                <button class="oper_btn_spec" id="equal">
-                    =
-                </button>
+            <div class="btns">
+                <div class="numbers">
+                    <div>
+                        <button class="num_btn"> 1 </button>
+                        <button class="num_btn"> 2 </button>
+                        <button class="num_btn"> 3 </button>
+                    </div>
+                    <div>
+                        <button class="num_btn"> 4 </button>
+                        <button class="num_btn"> 5 </button>
+                        <button class="num_btn"> 6 </button>
+                    </div>
+                    <div>
+                        <button class="num_btn"> 7 </button>
+                        <button class="num_btn"> 8 </button>
+                        <button class="num_btn"> 9 </button>
+                    </div>
+                    <div>
+                        <button class="oper_btn" id="dot"> . </button>
+                        <button class="num_btn" id="0"> 0 </button>
+                        <button class="num_btn" id="00"> 000 </button>
+                    </div>
+                </div>
+                <div class="operators">
+                    <button class="oper_btn"> + </button>
+                    <button class="oper_btn"> - </button>
+                    <button class="oper_btn"> * </button>
+                    <button class="oper_btn"> / </button>
+                    <button id="equal"> = </button>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script>
-    var input = document.getElementById("input");
-    input.addEventListener("keyup", function() {
-        input.value = input.value.replace(/[^0-9\+\-\*\/\.]/gi, "");
+
+    // КОНТРОЛЛЕР ВВОДИМЫХ ЗНАЧЕНИЙ
+
+    function input_keydown(e) {
+        if(input.value == "0") {
+            input.value = "";
+        }
+        if (/[^0-9\+\-\*\/\.]/gi.test(e.key)) {
+            if(e.key != "Enter" && e.key != "Backspace" && e.key != "F5" && e.key != "F12") {
+                e.preventDefault();
+            }
+        }
         var i = input.value.length;
-        if (input.value[i-1] == "+" || input.value[i-1] == "-" || input.value[i-1] == "*" || input.value[i-1] == "/" || input.value[i-1] == ".") {
-            if (input.value[i-2] == "+" || input.value[i-2] == "-" || input.value[i-2] == "*" || input.value[i-2] == "/" || input.value[i-2] == ".") {
-                input.value = input.value.replace(input.value[i-2].concat(input.value[i-1]), input.value[i-1]);
+        if (check_oper(e.key)) {
+            if (check_oper(input.value[i-1])) {
+                input.value = input.value.replace(input.value[i-1], e.key);
+                e.preventDefault();
             }
         }
         if (input.value[i-1] == ".") {
@@ -111,11 +100,13 @@
                 var find_minus = input.value.lastIndexOf("-"); 
                 var find_mult = input.value.lastIndexOf("*");
                 var find_div = input.value.lastIndexOf("/");
-                if(dot_count[dot_count.length - 2] != undefined) {
-                    if((dot_count[dot_count.length - 2] < find_plus && find_plus < dot_count[dot_count.length - 1]) || 
-                    (dot_count[dot_count.length - 2] < find_minus && find_minus < dot_count[dot_count.length - 1]) || 
-                    (dot_count[dot_count.length - 2] < find_mult && find_mult < dot_count[dot_count.length - 1]) || 
-                    (dot_count[dot_count.length - 2] < find_div && find_div < dot_count[dot_count.length - 1])) {
+                dot_arr_l = dot_count[dot_count.length - 1];
+                dot_arr_p = dot_count[dot_count.length - 2];
+                if(dot_arr_p != undefined) {
+                    if((dot_arr_p < find_plus && find_plus < dot_arr_l) || 
+                    (dot_arr_p < find_minus && find_minus < dot_arr_l) || 
+                    (dot_arr_p < find_mult && find_mult < dot_arr_l) || 
+                    (dot_arr_p < find_div && find_div < dot_arr_l)) {
                     } else {
                         input.value = input.value.slice(0, -1);
                     }
@@ -124,7 +115,26 @@
                     input.value = input.value.slice(0, -1);
                 }
             }
-    })
+    }
+
+    // АВТОФОКУС НА ПОЛЕ ВВОДА
+
+    function focusInput() {
+        input.focus();
+    }
+
+    // ФУНКЦИЯ ПРОВЕРКИ НА ОПЕРАТОРЫ
+
+    function check_oper(check) {
+        var opers = ["+", "-", "*", "/", "."];
+        var oper_checked = false;
+        opers.forEach(element => {
+            if(element == check) {
+                oper_checked = true;
+            }
+        });
+        return oper_checked;
+    }
 </script>
 <script src="../model/script.js"></script>
 </html>

@@ -4,6 +4,11 @@
 button {
     border: 1px solid #000;
     cursor: pointer;
+    background-color: #22E0BD;
+}
+.calc_wrap {
+    display: flex;
+    justify-content: center;
 }
 .main_body {
     height: 850px;
@@ -12,60 +17,78 @@ button {
 .input_wrap {
     display: flex;
 }
+.input_wrap button {
+    background-color: #29C7AA;
+    width: 150px;
+    height: 70px;
+}
 .input {
     width: 540px;
     height: 58px;
     background-color: #DAEBE7;
     border: 1px solid #000;
     padding: 5px;
+    text-align: right;
 }
-.c {
+.output_wrap {
+    display: flex;
+}
+.output_wrap button {
     background-color: #29C7AA;
     width: 150px;
-    height: 70px;
+    height: 72px;
 }
-.output {
-    width: 688px;
+#output {
+    width: 540px;
     height: 60px;
     background-color: #D9D9D9;
     border: 1px solid #000;
     padding: 5px;
+    text-align: right;
 }
 .btns {
     display: flex;
 }
 .numbers {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-items: stretch;
+    height: 710px;
 }
-.num_btn {
-    height: 178px;
-    width: 183px;
-    background-color: #22E0BD;
+.numbers div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    justify-items: stretch;
+    width: 550px;
+    height: 100%;
 }
-.short {
-    height: 176px;
-}
-.long {
-    width: 184px;
+.numbers button {
+    width: 100%;
 }
 .operators {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    justify-items: stretch;
     width: 150px;
+    height: 710px;
 }
-.oper_btn {
+.operators button {
+    height: 100%;
+}
+/* .oper_btn {
     height: 142px;
     width: 150px;
     background-color: #22E0BD;
-}
-#dot {
+} */
+/* #dot {
     height: 176px;
     width: 184px;
     background-color: #22E0BD;
-}
-.oper_btn_spec {
+} */
+/* .oper_btn_spec {
     height: 142px;
     width: 150px;
     background-color: #22E0BD;
-}
+} */
