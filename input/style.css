@@ -50,6 +50,11 @@ button {
     display: flex;
 }
 .numbers {
+    display: grid;
+    grid-template-rows: 177px 177px 177px 179px;
+    grid-template-columns: 183px 183px 184px;
+}
+/* .numbers {
     display: flex;
     flex-direction: column;
     justify-items: stretch;
@@ -62,7 +67,7 @@ button {
     justify-items: stretch;
     width: 550px;
     height: 100%;
-}
+} */
 .numbers button {
     width: 100%;
 }

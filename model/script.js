@@ -34,6 +34,9 @@ for(let j = 0; j < num_btns.length; j++) {
 var back = document.getElementById("back");
 back.addEventListener("click", function() {
     input.value = input.value.slice(0, -1);
+    if(input.value == "") {
+        input.value = "0";
+    }
 });
 
 // ФУНКЦИИ КНОПОК-ОПЕРАТОРОВ (И ТОЧКИ)
@@ -56,11 +59,7 @@ for(let j = 0; j < oper_btns.length; j++) {
             for(i = 0; i < input.value.length; i++) {
                 temp_dot = input.value.indexOf(".", temp_dot + 1);
                 if(temp_dot != -1) {
-                    dot_count.forEach(element => {
-                        if(element == temp_dot) {
-                            dot_error = true;
-                        }
-                    });
+                    dot_error =  dot_count.includes(temp_dot);
                     if(!dot_error) {
                         dot_count.push(temp_dot);
                     }
@@ -113,7 +112,7 @@ function check_enter(e) {
 };
 function calc() {
     var split = input.value.split("");
-    if(split[0] == input.value || input.value == "" || check_oper(split[split.length-1])) {
+    if(split[0] == input.value || input.value == "" || check_oper(split[split.length-1]) || split[0] == "-") {
         // output.value = "Ошибка - операторы введены не корректно"
     } else {
         input.value = "0";
@@ -126,6 +125,7 @@ function calc() {
             }
             console.log(split);
         }
+        error_zero = false;
         for(i = 0; i < split.length; i++) {
             if(!isNaN(split[i])) {
                 split[i] = Number(split[i]);
@@ -151,9 +151,6 @@ function calc() {
                 split.splice(i - 1, 3, temp_eval);
                 i = -1;
             } else if(split[i] == "-") {
-                if(split[i + 1] == 0) {
-                    error_zero = true;
-                }
                 temp_eval = split[i - 1] - split[i + 1];
                 split.splice(i - 1, 3, temp_eval);
                 i = -1;

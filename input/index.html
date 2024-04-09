@@ -7,43 +7,33 @@
     <title>calc</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onkeydown="focusInput()" onload="focusInput()">
+<body onkeydown="focusInput(), changeZero()" onload="focusInput()">
     <div class="calc_wrap">
         <div class="main_body">
             <div class="input_output">
                 <div class="input_wrap">
                     <input type="text" class="input" id="input" value="0" onkeydown="check_enter(event), input_keydown(event)">
-                    <button id="c">
-                        C
-                    </button>
+                    <button id="back">⌫</button>
                 </div>
                 <div class="output_wrap">
                     <input id="output" value="0" disabled></input>
-                    <button id="back">⌫</button>
+                    <button id="c"> C </button>
                 </div>
             </div>
             <div class="btns">
                 <div class="numbers">
-                    <div>
                         <button class="num_btn"> 1 </button>
                         <button class="num_btn"> 2 </button>
                         <button class="num_btn"> 3 </button>
-                    </div>
-                    <div>
                         <button class="num_btn"> 4 </button>
                         <button class="num_btn"> 5 </button>
                         <button class="num_btn"> 6 </button>
-                    </div>
-                    <div>
                         <button class="num_btn"> 7 </button>
                         <button class="num_btn"> 8 </button>
                         <button class="num_btn"> 9 </button>
-                    </div>
-                    <div>
                         <button class="oper_btn" id="dot"> . </button>
                         <button class="num_btn" id="0"> 0 </button>
                         <button class="num_btn" id="00"> 000 </button>
-                    </div>
                 </div>
                 <div class="operators">
                     <button class="oper_btn"> + </button>
@@ -59,16 +49,15 @@
 <script>
 
     // КОНТРОЛЛЕР ВВОДИМЫХ ЗНАЧЕНИЙ
-
     function input_keydown(e) {
-        if(input.value == "0") {
-            input.value = "";
-        }
+        //
         if (/[^0-9\+\-\*\/\.]/gi.test(e.key)) {
             if(e.key != "Enter" && e.key != "Backspace" && e.key != "F5" && e.key != "F12") {
                 e.preventDefault();
             }
         }
+        limit(e);
+        //
         var i = input.value.length;
         if (check_oper(e.key)) {
             if (check_oper(input.value[i-1])) {
@@ -76,64 +65,88 @@
                 e.preventDefault();
             }
         }
-        if (input.value[i-1] == ".") {
-                var dot_count = [];
-                var temp_dot = -1;
-                var dot_error = false;
-                for(i = 0; i < input.value.length; i++) {
-                    temp_dot = input.value.indexOf(".", temp_dot + 1);
-                    if(temp_dot != -1) {
-                        function dot_check() {
-                            dot_count.forEach(element => {
-                                if(element == temp_dot) {
-                                    dot_error = true;
-                                }
-                            });
-                        }
-                        dot_check();
-                        if(!dot_error) {
-                            dot_count.push(temp_dot);
-                        }
-                    }
-                }
-                var find_plus = input.value.lastIndexOf("+");
-                var find_minus = input.value.lastIndexOf("-"); 
-                var find_mult = input.value.lastIndexOf("*");
-                var find_div = input.value.lastIndexOf("/");
-                dot_arr_l = dot_count[dot_count.length - 1];
-                dot_arr_p = dot_count[dot_count.length - 2];
-                if(dot_arr_p != undefined) {
-                    if((dot_arr_p < find_plus && find_plus < dot_arr_l) || 
-                    (dot_arr_p < find_minus && find_minus < dot_arr_l) || 
-                    (dot_arr_p < find_mult && find_mult < dot_arr_l) || 
-                    (dot_arr_p < find_div && find_div < dot_arr_l)) {
-                    } else {
-                        input.value = input.value.slice(0, -1);
-                    }
-                }
-                if(dot_count[0] == 0) {
-                    input.value = input.value.slice(0, -1);
+        if (e.key == ".") {
+            var dot_count = [];
+            var find_dot = input.value.lastIndexOf(".");
+            dot_count.push(find_dot);
+            dot_count.push(input.value.length);
+            // var temp_dot = -1;
+            // var dot_error = false;
+            // for(i = 0; i < input.value.length; i++) {
+            //     temp_dot = input.value.indexOf(".", temp_dot + 1);
+            //     if(temp_dot != -1) {
+            //         dot_count.forEach(element => {
+            //             if(element == temp_dot) {
+            //                 dot_error = true;
+            //             }
+            //         });
+            //         if(!dot_error) {
+            //             dot_count.push(temp_dot);
+            //         }
+            //     }
+            // }
+            var find_plus = input.value.lastIndexOf("+");
+            var find_minus = input.value.lastIndexOf("-"); 
+            var find_mult = input.value.lastIndexOf("*");
+            var find_div = input.value.lastIndexOf("/");
+            dot_arr_l = dot_count[dot_count.length - 1];
+            dot_arr_p = dot_count[dot_count.length - 2];
+            if(dot_arr_p != -1) {
+                if((dot_arr_p < find_plus && find_plus < dot_arr_l) || 
+                (dot_arr_p < find_minus && find_minus < dot_arr_l) || 
+                (dot_arr_p < find_mult && find_mult < dot_arr_l) || 
+                (dot_arr_p < find_div && find_div < dot_arr_l)) {
+                } else {
+                    e.preventDefault();
                 }
             }
+            if(dot_count[0] == 0) {
+                e.preventDefault();
+            }
+        }
     }
 
     // АВТОФОКУС НА ПОЛЕ ВВОДА
 
     function focusInput() {
         input.focus();
+        var clear = this.input.value;
+        this.input.value = '';
+        this.input.value = clear;
+    }
+
+    // ФУНКЦИЯ ЗАМЕНЫ НУЛЯ ПРИ ВВОДЕ БЕЗ ФОКУСА
+
+    function changeZero() {
+        if(input.value == "0") {
+            input.value = "";
+        }
     }
 
     // ФУНКЦИЯ ПРОВЕРКИ НА ОПЕРАТОРЫ
 
     function check_oper(check) {
         var opers = ["+", "-", "*", "/", "."];
-        var oper_checked = false;
-        opers.forEach(element => {
-            if(element == check) {
-                oper_checked = true;
+        return opers.contains(check);
+    }
+
+    // ФУНКЦИЯ ОГРАНИЧЕНИЯ ВВОДА
+
+    function limit(e) {
+        var find_plus = input.value.lastIndexOf("+");
+        var find_minus = input.value.lastIndexOf("-"); 
+        var find_mult = input.value.lastIndexOf("*");
+        var find_div = input.value.lastIndexOf("/");
+        if(!isNaN(e.key)) {
+            if(input.value.length - find_plus >= 11 && input.value.length - find_minus >= 11 && input.value.length - find_mult >= 11 && input.value.length - find_div >= 11) {
+                e.preventDefault();
             }
-        });
-        return oper_checked;
+        }
+        if(!isNaN(e.key) || check_oper(e.key)) {
+            if(input.value.length > 30) {
+                e.preventDefault();
+            }
+        }
     }
 </script>
 <script src="../model/script.js"></script>
