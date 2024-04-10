@@ -127,7 +127,7 @@
 
     function check_oper(check) {
         var opers = ["+", "-", "*", "/", "."];
-        return opers.contains(check);
+        return opers.includes(check);
     }
 
     // ФУНКЦИЯ ОГРАНИЧЕНИЯ ВВОДА
@@ -148,6 +148,25 @@
             }
         }
     }
+
+    // ВВОД ЧИСЕЛ С ПОМОЩЬЮ КНОПОК
+
+    var num_btns = document.querySelectorAll(".num_btn");
+    for(let j = 0; j < num_btns.length; j++) {
+        num_btns[j].addEventListener("click", function() {
+            if(input.value == "0") {
+                if(num_btns[j].innerText == "000") {
+
+                } else {
+                    input.value = "";
+                    input.value += num_btns[j].innerText;
+                }
+            } else {
+                input.value += num_btns[j].innerText;
+            }
+        })
+    }
+    
 </script>
 <script src="../model/script.js"></script>
 </html>

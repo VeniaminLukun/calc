@@ -1,33 +1,15 @@
 // ФУНКЦИЯ ПРОВЕРКИ НА ОПЕРАТОРЫ
 
-function check_oper(check) {
-    var opers = ["+", "-", "*", "/", "."];
-    var oper_checked = false;
-    opers.forEach(element => {
-        if(element == check) {
-            oper_checked = true;
-        }
-    });
-    return oper_checked;
-}
-
-// ВВОД ЧИСЕЛ С ПОМОЩЬЮ КНОПОК
-
-var num_btns = document.querySelectorAll(".num_btn");
-for(let j = 0; j < num_btns.length; j++) {
-    num_btns[j].addEventListener("click", function() {
-        if(input.value == "0") {
-            if(num_btns[j].innerText == "000") {
-
-            } else {
-                input.value = "";
-                input.value += num_btns[j].innerText;
-            }
-        } else {
-            input.value += num_btns[j].innerText;
-        }
-    })
-}
+// function check_oper(check) {
+//     var opers = ["+", "-", "*", "/", "."];
+//     var oper_checked = false;
+//     opers.forEach(element => {
+//         if(element == check) {
+//             oper_checked = true;
+//         }
+//     });
+//     return oper_checked;
+// }
 
 // КНОПКА СТИРАНИЯ ПОСЛЕДНЕЙ ЦИФРЫ
 
@@ -112,7 +94,7 @@ function check_enter(e) {
 };
 function calc() {
     var split = input.value.split("");
-    if(split[0] == input.value || input.value == "" || check_oper(split[split.length-1]) || split[0] == "-") {
+    if(split[0] == input.value || input.value == "" || check_oper(split[split.length-1]) || check_oper(split[0])) {
         // output.value = "Ошибка - операторы введены не корректно"
     } else {
         input.value = "0";
